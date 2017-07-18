@@ -18,7 +18,7 @@ class HyperLogLog(object):
     def zeroes(self, num):
         '''Counts the number of predicate 0 bits in integer.'''
         if num == 0:
-            return 32 # Assumes 32 bit integer inputs!
+            return 0
         p = 0
         while (num >> p) & 1 == 0:
             p += 1
@@ -31,13 +31,34 @@ class HyperLogLog(object):
         z = zeroes(ins_val)
         if (m[ticker] < z):
             m[ticker] = z
-        if (ticker == 13):
+        if (ticker == (len(m) - 1)):
             ticker = 0
         else:
             ticker += ticker
 
-    def harmonic_mean(self):
-        
+    def simple_harmonic_mean(self, input_arr):
+        ''' Calculates the harmonic mean of the input array
+        '''
+        tot = 0.0
+        for val in input_arr:
+            tot += 1.0 / val
+
+        return (len(input_arr) / tot)
+
+    def cardinality_estimate(self):
+        ''' Computes the estimated cardinality of the multiset'''
+        stream_estimates = []
+
+        for val in m:
+            stream_estimates.append(math.pow(2, val))
+
+        return simple_harmonic_mean(stream_estimates)
+
+
+
+
+
+
 
 
 
