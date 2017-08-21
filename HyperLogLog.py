@@ -22,19 +22,19 @@ class HyperLogLog(object):
         p = 0
         while (num >> p) & 1 == 0:
             p += 1
-            return p
+        return p
 
     def insert(self, ins_val):
         ''' Counts predicate bits in the inserted integer and replaces
             the value of the current bit stream if necessary.
         '''
-        z = zeroes(ins_val)
-        if (m[ticker] < z):
-            m[ticker] = z
-        if (ticker == (len(m) - 1)):
-            ticker = 0
+        z = self.zeroes(ins_val)
+        if (self.m[self.ticker] < z):
+            self.m[self.ticker] = z
+        if (self.ticker == (len(self.m) - 1)):
+            self.ticker = 0
         else:
-            ticker += ticker
+            self.ticker += 1
 
     def simple_harmonic_mean(self, input_arr):
         ''' Calculates the harmonic mean of the input array
@@ -49,10 +49,10 @@ class HyperLogLog(object):
         ''' Computes the estimated cardinality of the multiset'''
         stream_estimates = []
 
-        for val in m:
-            stream_estimates.append(math.pow(2, val))
+        for val in self.m:
+            stream_estimates.append(2 ** val)
 
-        return simple_harmonic_mean(stream_estimates)
+        return self.simple_harmonic_mean(stream_estimates)
 
 
 
